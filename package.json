@@ -1,0 +1,30 @@
+{
+  "name": "bitstamp",
+  "version": "0.0.1",
+  "description": "Bitstamp REST API wrapper",
+  "keywords": [
+    "bitstamp",
+    "btc",
+    "bitcoin"
+  ],
+  "author": {
+    "author": "Mike van Rossum <mike@mvr.me>",
+  },
+  "license": "MIT",
+  "dependencies": {
+    "underscore": "1.4.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/askmike/bitstamp"
+  },
+  "main": "bitstamp.js",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "bugs": {
+    "url": "https://github.com/askmike/bitstamp/issues",
+    "email": "mike@mvr.me"
+  },
+  "readmeFilename": "README.md"
+}

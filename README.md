@@ -1,5 +1,7 @@
 # Bitstamp
 
+    npm install bitstamp
+
 A basic API wrapper for the [Bitstamp REST API](https://www.bitstamp.net/api/). Please refer to [their documentation](https://www.bitstamp.net/api/) for all calls explained. Check out `example.js` for a list of all possible calls and their parameters.
 
     var Bitstamp = require('bitstamp');

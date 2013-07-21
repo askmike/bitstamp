@@ -39,10 +39,11 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
     });
     res.on('end', function() {
       try {
-        callback(null, JSON.parse(buffer));
+        var json = JSON.parse(buffer);
       } catch (err) {
-        callback(err);
+        return callback(err);
       }
+      callback(null, json);
     });
   });
   req.end(data);

@@ -71,12 +71,12 @@ Bitstamp.prototype._post = function(action, callback, args) {
 // Public API
 // 
 
-Bitstamp.prototype.transactions = function(timedelta, callback) {
+Bitstamp.prototype.transactions = function(options, callback) {
   if(!callback) {
-    callback = timedelta;
-    timedelta = undefined;
+    callback = options;
+    options = undefined;
   }
-  this._get('transactions', callback, {timedelta: timedelta});
+  this._get('transactions', callback, options);
 }
 
 Bitstamp.prototype.ticker = function(callback) {

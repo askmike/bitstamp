@@ -2,7 +2,7 @@ var Bitstamp = require('./bitstamp.js');
 
 var publicBitstamp = new Bitstamp();
 
-publicBitstamp.transactions(100, console.log);
+publicBitstamp.transactions({limit: 100}, console.log);
 publicBitstamp.ticker(console.log);
 publicBitstamp.order_book(false, console.log);
 publicBitstamp.bitinstant(console.log);

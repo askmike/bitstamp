@@ -11,6 +11,11 @@ A basic API wrapper for the [Bitstamp REST API](https://www.bitstamp.net/api/). 
       console.log(trades);  
     });
 
+
+## 0.1.0 - Big October 2013 update
+
+The whole private API authentication process looks different now. The result is that you have to provide different information to Bitstamp (generate an API key, provide key, secret and client ID - the last is your Bitstamp user ID). Check out the new examples in `example.js`.
+
 # Final
 
 If this wrapper helped you in any way, you can always leave me a tip at (BTC) 1KyQdQ9ctjCrGjGRCWSBhPKcj5omy4gv5S

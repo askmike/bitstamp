@@ -8,23 +8,30 @@ publicBitstamp.order_book(false, console.log);
 publicBitstamp.bitinstant(console.log);
 publicBitstamp.eur_usd(console.log);
 
-var user = 'your username';
-var password = 'your password';
-var privateBitstamp = new Bitstamp(user, password);
-
-privateBitstamp.balance(console.log);
-privateBitstamp.user_transactions(100, console.log);
-privateBitstamp.open_orders(console.log);
+var key = 'your key';
+var secret = 'your secret';
+var client_id = 0; // your Bitstamp user ID
+var privateBitstamp = new Bitstamp(key, secret, client_id);
 
 //    commented out for your protection
 
+// privateBitstamp.balance(console.log);
+// privateBitstamp.user_transactions(100, console.log);
+// privateBitstamp.open_orders(console.log);
 // privateBitstamp.cancel_order(id, console.log);
 // privateBitstamp.buy(amount, price, console.log);
 // privateBitstamp.sell(amount, price, console.log);
+// privateBitstamp.withdrawal_requests(console.log);
+// privateBitstamp.bitcoin_withdrawal(amount, address, console.log);
+// privateBitstamp.bitcoin_deposit_address(console.log);
+// privateBitstamp.unconfirmed_btc(console.log())
+// privateBitstamp.ripple_withdrawal(amount, address, currency)
+// privateBitstamp.ripple_address(console.log)
+
+
+//		Bistamp is currently (Thu Oct 31 13:54:19 CET 2013) 
+//		returning 404's when doing these calls
+
 // privateBitstamp.create_code(usd, btc, console.log);
 // privateBitstamp.check_code(code, console.log);
 // privateBitstamp.redeem_code(code, console.log);
-// privateBitstamp.sendtouser(customer_id, currency, amount, console.log);
-privateBitstamp.withdrawal_requests(console.log);
-// privateBitstamp.bitcoin_withdrawal(amount, address, console.log);
-privateBitstamp.bitcoin_deposit_address(console.log);

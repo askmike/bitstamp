@@ -52,6 +52,7 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
       callback(null, json);
     });
   });
+  req.on('error',function(err){callback(err)});
   req.end(data);
 }
 

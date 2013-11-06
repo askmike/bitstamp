@@ -38,6 +38,7 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
   }
 
   var req = https.request(options, function(res) {
+    req.on('error',function(err){callback(err)});
     res.setEncoding('utf8');
     var buffer = '';
     res.on('data', function(data) {

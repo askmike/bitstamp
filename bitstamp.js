@@ -141,7 +141,7 @@ Bitstamp.prototype.open_orders = function(callback) {
 }
 
 Bitstamp.prototype.cancel_order = function(id, callback) {
-  this._post('user_transactions', callback, {id: id});
+  this._post('cancel_order', callback, {id: id});
 }
 
 Bitstamp.prototype.buy = function(amount, price, callback) {

@@ -23,6 +23,7 @@ var Bitstamp = function(key, secret, client_id) {
 }
 
 Bitstamp.prototype._request = function(method, path, data, callback, args) {
+  
   var options = {
     host: 'www.bitstamp.net',
     path: path,
@@ -37,25 +38,41 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
     options.headers['content-type'] = 'application/x-www-form-urlencoded';
   }
 
-  var req = https.request(options, function(res) {
-    res.setEncoding('utf8');
-    var buffer = '';
-    res.on('data', function(data) {
-      buffer += data;
+  var d = domain.create();
+
+  d.run(function() {
+    var req = https.request(options, function(res) {
+      res.setEncoding('utf8');
+      var buffer = '';
+      res.on('data', function(data) {
+        buffer += data;
+      });
+      res.on('end', function() {
+        try {
+          var json = JSON.parse(buffer);
+        } catch (err) {
+          return callback(err);
+        }
+        callback(null, json);
+      });
     });
-    res.on('end', function() {
-      try {
-        var json = JSON.parse(buffer);
-      } catch (err) {
-        return callback(err);
-      }
-      callback(null, json);
+    req.on('error', function(err) {
+      callback(err);
     });
+    req.on('socket', function (socket) {
+      socket.setTimeout(5000);
+      socket.on('timeout', function() {
+        req.abort();
+        callback('Request Timed Out!');
+      });
+    });
+    req.end(data);
   });
-  req.on('error', function(err) {
+
+  d.on('error', function(err) {
     callback(err);
   });
-  req.end(data);
+
 }
 
 Bitstamp.prototype._get = function(action, callback, args) {

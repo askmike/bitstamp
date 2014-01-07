@@ -23,6 +23,7 @@ var Bitstamp = function(key, secret, client_id) {
 }
 
 Bitstamp.prototype._request = function(method, path, data, callback, args) {
+  
   var options = {
     host: 'www.bitstamp.net',
     path: path,
@@ -52,10 +53,21 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
       callback(null, json);
     });
   });
+
   req.on('error', function(err) {
     callback(err);
   });
+
+  req.on('socket', function (socket) {
+    socket.setTimeout(5000);
+    socket.on('timeout', function() {
+      req.abort();
+      callback('Request Timed Out!');
+    });
+  });
+  
   req.end(data);
+
 }
 
 Bitstamp.prototype._get = function(action, callback, args) {

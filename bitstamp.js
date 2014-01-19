@@ -62,7 +62,6 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
     socket.setTimeout(5000);
     socket.on('timeout', function() {
       req.abort();
-      callback('Request Timed Out!');
     });
   });
   

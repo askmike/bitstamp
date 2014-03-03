@@ -81,7 +81,7 @@ Bitstamp.prototype._post = function(action, callback, args) {
 
   var path = '/api/' + action + '/';
 
-  var nonce = +new Date() + '';
+  var nonce = new Date().getTime() + '' + new Date().getMilliseconds();
   var message = nonce + this.client_id + this.key;
   var signer = crypto.createHmac('sha256', new Buffer(this.secret, 'utf8'));
   var signature = signer.update(message).digest('hex').toUpperCase();

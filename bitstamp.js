@@ -12,15 +12,22 @@ _.mixin({
     });
     return to_clean;
   }
-});  
+});
 
-var Bitstamp = function(key, secret, client_id) {
+var Bitstamp = function(key, secret, client_id, nonce_generator) {
   this.key = key;
   this.secret = secret;
   this.client_id = client_id;
+  this.nonce_generator = (nonce_generator || function() {
+    var now = new Date();
+    var nonce = now.getTime();
+    var milliseconds = now.getMilliseconds();
+    nonce = nonce * 1000 + milliseconds;
+    return nonce;
+  });
 
   _.bindAll(this);
-}
+};
 
 Bitstamp.prototype._request = function(method, path, data, callback, args) {
   
@@ -70,13 +77,13 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
   
   req.end(data);
 
-}
+};
 
 Bitstamp.prototype._get = function(action, callback, args) {
   args = _.compactObject(args);
   var path = '/api/' + action + '/?' + querystring.stringify(args);
-  this._request('get', path, undefined, callback, args)
-}
+  this._request('get', path, undefined, callback, args);
+};
 
 Bitstamp.prototype._post = function(action, callback, args) {
   if(!this.key || !this.secret || !this.client_id)
@@ -84,7 +91,8 @@ Bitstamp.prototype._post = function(action, callback, args) {
 
   var path = '/api/' + action + '/';
 
-  var nonce = new Date().getTime() + '' + new Date().getMilliseconds();
+  var now = new Date();
+  var nonce = this.nonce_generator();
   var message = nonce + this.client_id + this.key;
   var signer = crypto.createHmac('sha256', new Buffer(this.secret, 'utf8'));
   var signature = signer.update(message).digest('hex').toUpperCase();

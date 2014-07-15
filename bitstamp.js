@@ -19,11 +19,10 @@ var Bitstamp = function(key, secret, client_id, nonce_generator) {
   this.secret = secret;
   this.client_id = client_id;
   this.nonce_generator = (nonce_generator || function() {
+    var now = new Date();
     var nonce = now.getTime();
     var milliseconds = now.getMilliseconds();
-    // zero-pad milliseconds to always be 3 digits long
-    var paddedNonce = "00" + milliseconds;
-    nonce += paddedNonce.substr(paddedNonce.length-3);
+    nonce = nonce * 1000 + milliseconds;
     return nonce;
   });
 

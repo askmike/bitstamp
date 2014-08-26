@@ -69,6 +69,20 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
 
 }
 
+// if you call new Date to fast it will generate
+// the same ms, helper to make sure the nonce is
+// truly unique.
+Bitstamp.prototype._generateNonce = function() {
+  var now = new Date().getTime();
+
+  if(now !== this.last)
+    this.nonceIncr = 0;    
+
+  this.last = now;
+
+  return now + (++this.nonceIncr) + '';
+}
+
 Bitstamp.prototype._get = function(action, callback, args) {
   args = _.compactObject(args);
   var path = '/api/' + action + '/?' + querystring.stringify(args);
@@ -81,7 +95,7 @@ Bitstamp.prototype._post = function(action, callback, args) {
 
   var path = '/api/' + action + '/';
 
-  var nonce = new Date().getTime() + '' + new Date().getMilliseconds();
+  var nonce = this._generateNonce();
   var message = nonce + this.client_id + this.key;
   var signer = crypto.createHmac('sha256', new Buffer(this.secret, 'utf8'));
   var signature = signer.update(message).digest('hex').toUpperCase();

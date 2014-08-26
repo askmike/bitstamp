@@ -3,10 +3,9 @@ var Bitstamp = require('./bitstamp.js');
 var publicBitstamp = new Bitstamp();
 
 publicBitstamp.transactions({time: 'hour'}, console.log);
-publicBitstamp.ticker(console.log);
-publicBitstamp.order_book(false, console.log);
-publicBitstamp.bitinstant(console.log);
-publicBitstamp.eur_usd(console.log);
+// publicBitstamp.ticker(console.log);
+// publicBitstamp.order_book(false, console.log);
+// publicBitstamp.eur_usd(console.log);
 
 var key = 'your key';
 var secret = 'your secret';
@@ -35,3 +34,8 @@ var privateBitstamp = new Bitstamp(key, secret, client_id);
 // privateBitstamp.create_code(usd, btc, console.log);
 // privateBitstamp.check_code(code, console.log);
 // privateBitstamp.redeem_code(code, console.log);
+
+//    Bistamp is currently (Tue Aug 26 19:31:55 CEST 2014) 
+//    returning 404's when doing these calls
+
+// publicBitstamp.bitinstant(console.log);

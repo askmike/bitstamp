@@ -74,16 +74,23 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
 
 // if you call new Date to fast it will generate
 // the same ms, helper to make sure the nonce is
-// truly unique.
+// truly unique (supports up to 999 calls per ms).
 Bitstamp.prototype._generateNonce = function() {
   var now = new Date().getTime();
 
   if(now !== this.last)
-    this.nonceIncr = 0;    
+    this.nonceIncr = -1;    
 
   this.last = now;
+  this.nonceIncr++;
 
-  return now + (++this.nonceIncr) + '';
+  // add padding to nonce incr
+  // @link https://stackoverflow.com/questions/6823592/numbers-in-the-form-of-001
+  var padding = 
+    this.nonceIncr < 10 ? '000' : 
+      this.nonceIncr < 100 ? '00' :
+        this.nonceIncr < 1000 ?  '0' : '';
+  return now + padding + this.nonceIncr;
 }
 
 Bitstamp.prototype._get = function(action, callback, args) {

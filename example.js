@@ -9,7 +9,7 @@ publicBitstamp.transactions({time: 'hour'}, console.log);
 
 var key = 'your key';
 var secret = 'your secret';
-var client_id = 0; // your Bitstamp user ID
+var client_id = '0'; // your Bitstamp user ID
 var privateBitstamp = new Bitstamp(key, secret, client_id);
 
 //    commented out for your protection

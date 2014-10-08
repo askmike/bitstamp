@@ -55,6 +55,8 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
       try {
         var json = JSON.parse(buffer);
       } catch (err) {
+        if(process.env.NODE_ENV === "development")
+          console.log("ERROR bitstamp.parsing:",buffer);
         return callback(err);
       }
       callback(null, json);

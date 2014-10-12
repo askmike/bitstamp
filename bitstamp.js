@@ -52,10 +52,11 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
       buffer += data;
     });
     res.on('end', function() {
+      var json;
       try {
-        var json = JSON.parse(buffer);
+        json = JSON.parse(buffer);
       } catch (err) {
-        if(process.env.NODE_ENV === "development")
+        if(process.env.LOG_BITSTAMP)
           console.log("ERROR bitstamp.parsing:",buffer);
         return callback(err);
       }

@@ -163,12 +163,12 @@ Bitstamp.prototype.balance = function(callback) {
   this._post('balance', callback);
 }
 
-Bitstamp.prototype.user_transactions = function(timedelta, callback) {
+Bitstamp.prototype.user_transactions = function(limit, callback) {
   if(!callback) {
-    callback = timedelta;
-    timedelta = undefined;
+    callback = limit;
+    limit = undefined;
   }
-  this._post('user_transactions', callback, {timedelta: timedelta});
+  this._post('user_transactions', callback, {limit: limit});
 }
 
 Bitstamp.prototype.open_orders = function(callback) {

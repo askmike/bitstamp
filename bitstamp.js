@@ -57,7 +57,7 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
         json = JSON.parse(buffer);
       } catch (err) {
         if(process.env.LOG_BITSTAMP)
-          console.log("ERROR bitstamp.parsing:",buffer);
+          console.log("[ERROR] ["+path+"] bitstamp.parsing:",buffer);
         return callback(err);
       }
       callback(null, json);
@@ -72,9 +72,6 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
     socket.setTimeout(5000);
     socket.on('timeout', function() {
       req.abort();
-    });
-    socket.on('error', function(err) {
-      callback(err);
     });
   });
   

@@ -45,6 +45,9 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
       buffer += data;
     });
     res.on('end', function() {
+      if (res.statusCode !== 200) {
+        return callback(new Error('Bitstamp error ' + res.statusCode + ': ' + buffer));
+      }
       try {
         var json = JSON.parse(buffer);
       } catch (err) {

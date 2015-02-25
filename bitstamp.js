@@ -146,7 +146,12 @@ Bitstamp.prototype.order_book = function(group, callback) {
     callback = group;
     group = undefined;
   }
-  this._get('order_book', callback, {group: group});
+  var options;
+  if(typeof limit === 'object')
+    options = group;
+  else
+    options = {group: group};
+  this._get('order_book', callback, options);
 }
 
 Bitstamp.prototype.bitinstant = function(callback) {
@@ -171,7 +176,12 @@ Bitstamp.prototype.user_transactions = function(limit, callback) {
     callback = limit;
     limit = undefined;
   }
-  this._post('user_transactions', callback, {limit: limit});
+  var options;
+  if(typeof limit === 'object')
+    options = limit;
+  else
+    options = {limit: limit};
+  this._post('user_transactions', callback, options);
 }
 
 Bitstamp.prototype.open_orders = function(callback) {

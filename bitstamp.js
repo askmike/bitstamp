@@ -98,7 +98,7 @@ Bitstamp.prototype._generateNonce = function() {
 
 Bitstamp.prototype._get = function(action, callback, args) {
   args = _.compactObject(args);
-  var path = '/api/' + action + '/?' + querystring.stringify(args);
+  var path = '/api/' + action + (querystring.stringify(args) === '' ? '/' : '/?') + querystring.stringify(args);
   this._request('get', path, undefined, callback, args)
 }
 

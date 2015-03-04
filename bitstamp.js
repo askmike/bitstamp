@@ -104,7 +104,7 @@ Bitstamp.prototype._get = function(action, callback, args) {
 
 Bitstamp.prototype._post = function(action, callback, args) {
   if(!this.key || !this.secret || !this.client_id)
-    return callback('Must provide key, secret and client ID to make this API request.');
+    return callback(new Error('Must provide key, secret and client ID to make this API request.'));
 
   var path = '/api/' + action + '/';
 

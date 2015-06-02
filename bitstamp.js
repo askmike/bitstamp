@@ -45,6 +45,9 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
       buffer += data;
     });
     res.on('end', function() {
+      if (res.statusCode !== 200) {
+        return callback(new Error('Bitstamp error ' + res.statusCode + ': ' + buffer));
+      }
       try {
         var json = JSON.parse(buffer);
       } catch (err) {
@@ -95,13 +98,13 @@ Bitstamp.prototype._generateNonce = function() {
 
 Bitstamp.prototype._get = function(action, callback, args) {
   args = _.compactObject(args);
-  var path = '/api/' + action + '/?' + querystring.stringify(args);
+  var path = '/api/' + action + (querystring.stringify(args) === '' ? '/' : '/?') + querystring.stringify(args);
   this._request('get', path, undefined, callback, args)
 }
 
 Bitstamp.prototype._post = function(action, callback, args) {
   if(!this.key || !this.secret || !this.client_id)
-    return callback('Must provide key, secret and client ID to make this API request.');
+    return callback(new Error('Must provide key, secret and client ID to make this API request.'));
 
   var path = '/api/' + action + '/';
 
@@ -143,7 +146,12 @@ Bitstamp.prototype.order_book = function(group, callback) {
     callback = group;
     group = undefined;
   }
-  this._get('order_book', callback, {group: group});
+  var options;
+  if(typeof limit === 'object')
+    options = group;
+  else
+    options = {group: group};
+  this._get('order_book', callback, options);
 }
 
 Bitstamp.prototype.bitinstant = function(callback) {
@@ -168,7 +176,12 @@ Bitstamp.prototype.user_transactions = function(limit, callback) {
     callback = limit;
     limit = undefined;
   }
-  this._post('user_transactions', callback, {limit: limit});
+  var options;
+  if(typeof limit === 'object')
+    options = limit;
+  else
+    options = {limit: limit};
+  this._post('user_transactions', callback, options);
 }
 
 Bitstamp.prototype.open_orders = function(callback) {

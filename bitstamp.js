@@ -20,10 +20,7 @@ var Bitstamp = function(key, secret, client_id, nonce_generator) {
   this.client_id = client_id;
   this.nonce_generator = (nonce_generator || function() {
     var now = new Date();
-    var nonce = now.getTime();
-    var milliseconds = now.getMilliseconds();
-    nonce = nonce * 1000 + milliseconds;
-    return nonce;
+    return now.getTime();
   });
 
   _.bindAll(this);

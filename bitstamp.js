@@ -60,6 +60,8 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
           console.log("[ERROR] ["+path+"] bitstamp.parsing:",buffer);
         return callback(err);
       }
+      if(json&&json.error)
+        return callback(json);
       callback(null, json);
     });
   });
@@ -208,6 +210,10 @@ Bitstamp.prototype.check_code = function(code, callback) {
 }
 Bitstamp.prototype.redeem_code = function(code, callback) {
   this._post('redeem_code', callback, {code: code});
+}
+
+Bitstamp.prototype.order_status = function(id, callback) {
+  this._post('order_status', callback, {id: id});
 }
 
 module.exports = Bitstamp;

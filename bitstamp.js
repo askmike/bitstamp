@@ -171,16 +171,11 @@ Bitstamp.prototype.balance = function(callback) {
   this._post('balance', callback);
 }
 
-Bitstamp.prototype.user_transactions = function(limit, callback) {
+Bitstamp.prototype.user_transactions = function(options, callback) {
   if(!callback) {
-    callback = limit;
-    limit = undefined;
+    callback = options;
+    options = undefined;
   }
-  var options;
-  if(typeof limit === 'object')
-    options = limit;
-  else
-    options = {limit: limit};
   this._post('user_transactions', callback, options);
 }
 

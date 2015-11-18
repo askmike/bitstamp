@@ -15,7 +15,7 @@ var privateBitstamp = new Bitstamp(key, secret, client_id);
 //    commented out for your protection
 
 // privateBitstamp.balance(console.log);
-// privateBitstamp.user_transactions(100, console.log);
+// privateBitstamp.user_transactions({limit: 10, offset: 5, sort: 'asc'}, console.log);
 // privateBitstamp.open_orders(console.log);
 // privateBitstamp.cancel_order(id, console.log);
 // privateBitstamp.buy(amount, price, console.log);

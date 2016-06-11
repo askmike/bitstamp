@@ -23,7 +23,6 @@ var Bitstamp = function(key, secret, client_id) {
 }
 
 Bitstamp.prototype._request = function(method, path, data, callback, args) {
-  
   var options = {
     host: 'www.bitstamp.net',
     path: path,
@@ -96,17 +95,32 @@ Bitstamp.prototype._generateNonce = function() {
   return now + padding + this.nonceIncr;
 }
 
-Bitstamp.prototype._get = function(action, callback, args) {
+Bitstamp.prototype._get = function(market, action, callback, args) {
   args = _.compactObject(args);
-  var path = '/api/' + action + (querystring.stringify(args) === '' ? '/' : '/?') + querystring.stringify(args);
+
+  if(market)
+    var path = '/api/v2/' + action + '/' + market;
+  else
+    // some documented endpoints (eg `https://www.bitstamp.net/api/eur_usd/`)
+    // do not go via the v2 api.
+    var path = '/api/' + action;
+
+  path += (querystring.stringify(args) === '' ? '/' : '/?') + querystring.stringify(args);
   this._request('get', path, undefined, callback, args)
 }
 
-Bitstamp.prototype._post = function(action, callback, args) {
+Bitstamp.prototype._post = function(market, action, callback, args, legacy_endpoint) {
   if(!this.key || !this.secret || !this.client_id)
     return callback(new Error('Must provide key, secret and client ID to make this API request.'));
 
-  var path = '/api/' + action + '/';
+  if(legacy_endpoint)
+    var path = '/api/' + action + '/';
+  else {
+    if(market)
+      var path = '/api/v2/' + action + '/' + market + '/';
+    else
+      var path = '/api/v2/' + action + '/';
+  }
 
   var nonce = this._generateNonce();
   var message = nonce + this.client_id + this.key;
@@ -129,19 +143,23 @@ Bitstamp.prototype._post = function(action, callback, args) {
 // Public API
 // 
 
-Bitstamp.prototype.transactions = function(options, callback) {
+Bitstamp.prototype.transactions = function(market, options, callback) {
   if(!callback) {
     callback = options;
     options = undefined;
   }
-  this._get('transactions', callback, options);
+  this._get(market, 'transactions', callback, options);
 }
 
-Bitstamp.prototype.ticker = function(callback) {
-  this._get('ticker', callback);
+Bitstamp.prototype.ticker = function(market, callback) {
+  this._get(market, 'ticker', callback);
 }
 
-Bitstamp.prototype.order_book = function(group, callback) {
+Bitstamp.prototype.ticker_hour = function(market, callback) {
+  this._get(market, 'ticker_hour', callback);
+}
+
+Bitstamp.prototype.order_book = function(market, group, callback) {
   if(!callback) {
     callback = group;
     group = undefined;
@@ -151,15 +169,16 @@ Bitstamp.prototype.order_book = function(group, callback) {
     options = group;
   else
     options = {group: group};
-  this._get('order_book', callback, options);
+  this._get(market, 'order_book', callback, options);
 }
 
-Bitstamp.prototype.bitinstant = function(callback) {
-  this._get('bitinstant', callback);
-}
+// This API calls are removed from the documentation as of `Sat Jun 11 2016 10:10:07`
+// Bitstamp.prototype.bitinstant = function(callback) {
+//   this._get('bitinstant', callback);
+// }
 
 Bitstamp.prototype.eur_usd = function(callback) {
-  this._get('eur_usd', callback);
+  this._get(null, 'eur_usd', callback);
 }
 
 // 
@@ -167,72 +186,100 @@ Bitstamp.prototype.eur_usd = function(callback) {
 // (you need to have key / secret / client ID set)
 // 
 
-Bitstamp.prototype.balance = function(callback) {
-  this._post('balance', callback);
+Bitstamp.prototype.balance = function(market, callback) {
+  this._post(market, 'balance', callback);
 }
 
-Bitstamp.prototype.order_status = function (id, callback) {
-  this._post('order_status', callback, {id: id});
-};
-
-Bitstamp.prototype.user_transactions = function(options, callback) {
+Bitstamp.prototype.user_transactions = function(market, options, callback) {
   if(!callback) {
     callback = options;
     options = undefined;
   }
-  this._post('user_transactions', callback, options);
+  this._post(market, 'user_transactions', callback, options);
 }
 
-Bitstamp.prototype.open_orders = function(callback) {
-  this._post('open_orders', callback);
+Bitstamp.prototype.open_orders = function(market, callback) {
+  this._post(market, 'open_orders', callback);
 }
+
+Bitstamp.prototype.order_status = function (id, callback) {
+  this._post(null, 'order_status', callback, {id: id}, true);
+};
 
 Bitstamp.prototype.cancel_order = function(id, callback) {
-  this._post('cancel_order', callback, {id: id});
+  this._post(null, 'cancel_order', callback, {id: id}, true);
 }
 
-Bitstamp.prototype.buy = function(amount, price, callback) {
-  this._post('buy', callback, {amount: amount, price: price});
+Bitstamp.prototype.cancel_all_orders = function(callback) {
+  this._post(null, 'cancel_all_orders', callback, null, true);
 }
 
-Bitstamp.prototype.sell = function(amount, price, callback) {
-  this._post('sell', callback, {amount: amount, price: price});
+Bitstamp.prototype.buy = function(market, amount, price, limit_price, callback) {
+  this._post(market, 'buy', callback, {
+    amount: amount,
+    price: price,
+    limit_price: limit_price
+  });
+}
+
+Bitstamp.prototype.sell = function(market, amount, price, limit_price, callback) {
+  this._post(market, 'sell', callback, {
+    amount: amount,
+    price: price,
+    limit_price: limit_price
+  });
 }
 
 Bitstamp.prototype.withdrawal_requests = function(callback) {
-  this._post('withdrawal_requests', callback);
+  this._post(null, 'withdrawal_requests', callback, null, true);
 }
 
-Bitstamp.prototype.bitcoin_withdrawal = function(amount, address, callback) {
-  this._post('bitcoin_withdrawal', callback, {amount: amount, address: address});
+Bitstamp.prototype.bitcoin_withdrawal = function(amount, address, instant, callback) {
+  this._post(null, 'bitcoin_withdrawal', callback, {
+    amount: amount,
+    address: address,
+    instant: instant
+  }, true);
 }
 
 Bitstamp.prototype.bitcoin_deposit_address = function(callback) {
-  this._post('bitcoin_deposit_address', callback);
+  this._post(null, 'bitcoin_deposit_address', callback, null, true);
 }
 
 Bitstamp.prototype.unconfirmed_btc = function(callback) {
-  this._post('unconfirmed_btc', callback);
+  this._post(null, 'unconfirmed_btc', callback, null, true);
 }
 
+
+// the API documentation is wrong as of `Sat Jun 11 2016 10:10:07`.
+// It doesn't corectly list this call. Therefor not sure if all
+// arguments are correct.
 Bitstamp.prototype.ripple_withdrawal = function(amount, address, currency, callback) {
-  this._post('ripple_withdrawal', callback, {amount: amount, address: address, currency: currency});
+  this._post(null, 'ripple_withdrawal', callback, {
+    amount: amount,
+    address: address,
+    currency: currency
+  }, true);
 }
 
 Bitstamp.prototype.ripple_address = function(callback) {
-  this._post('ripple_address', callback);
+  this._post(null, 'ripple_address', callback, null, true);
 }
 
-// These API calls return a 404 as of `Thu Oct 31 13:54:19 CET 2013`
-// even though they are still in the API documentation
-Bitstamp.prototype.create_code = function(usd, btc, callback) {
-  this._post('create_code', callback, {usd: usd, btc: btc});
+Bitstamp.prototype.transfer_to_main = function(amount, currency, subAccount, callback) {
+  this._post(null, 'transfer-to-main', callback, {
+    amount: amount,
+    currency: currency,
+    subAccount: subAccount
+  }, true);
 }
-Bitstamp.prototype.check_code = function(code, callback) {
-  this._post('check_code', callback, {code: code});
-}
-Bitstamp.prototype.redeem_code = function(code, callback) {
-  this._post('redeem_code', callback, {code: code});
+
+Bitstamp.prototype.transfer_from_main = function(amount, currency, subAccount, callback) {
+  this._post(null, 'transfer-from-main', callback, {
+    amount: amount,
+    currency: currency,
+    subAccount: subAccount
+  }, true);
 }
 
 module.exports = Bitstamp;

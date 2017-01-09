@@ -12,7 +12,7 @@ _.mixin({
     });
     return to_clean;
   }
-});  
+});
 
 var Bitstamp = function(key, secret, client_id) {
   this.key = key;
@@ -69,7 +69,7 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
       callback(err);
     });
   });
-  
+
   req.end(data);
 
 }
@@ -81,15 +81,15 @@ Bitstamp.prototype._generateNonce = function() {
   var now = new Date().getTime();
 
   if(now !== this.last)
-    this.nonceIncr = -1;    
+    this.nonceIncr = -1;
 
   this.last = now;
   this.nonceIncr++;
 
   // add padding to nonce incr
   // @link https://stackoverflow.com/questions/6823592/numbers-in-the-form-of-001
-  var padding = 
-    this.nonceIncr < 10 ? '000' : 
+  var padding =
+    this.nonceIncr < 10 ? '000' :
       this.nonceIncr < 100 ? '00' :
         this.nonceIncr < 1000 ?  '0' : '';
   return now + padding + this.nonceIncr;
@@ -139,9 +139,9 @@ Bitstamp.prototype._post = function(market, action, callback, args, legacy_endpo
   this._request('post', path, data, callback, args);
 }
 
-// 
+//
 // Public API
-// 
+//
 
 Bitstamp.prototype.transactions = function(market, options, callback) {
   if(!callback) {
@@ -181,10 +181,10 @@ Bitstamp.prototype.eur_usd = function(callback) {
   this._get(null, 'eur_usd', callback);
 }
 
-// 
+//
 // Private API
 // (you need to have key / secret / client ID set)
-// 
+//
 
 Bitstamp.prototype.balance = function(market, callback) {
   this._post(market, 'balance', callback);
@@ -222,11 +222,23 @@ Bitstamp.prototype.buy = function(market, amount, price, limit_price, callback) 
   });
 }
 
+Bitstamp.prototype.buyMarket = function(market, amount, callback) {
+  this._post(market, 'buy/market', callback, {
+    amount: amount
+  });
+}
+
 Bitstamp.prototype.sell = function(market, amount, price, limit_price, callback) {
   this._post(market, 'sell', callback, {
     amount: amount,
     price: price,
     limit_price: limit_price
+  });
+}
+
+Bitstamp.prototype.sellMarket = function(market, amount, callback) {
+  this._post(market, 'sell/market', callback, {
+    amount: amount
   });
 }
 

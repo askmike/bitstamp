@@ -65,6 +65,9 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
     socket.on('timeout', function() {
       req.abort();
     });
+    socket.on('error', function() {
+      callback(err);
+    });
   });
 
   req.end(data);

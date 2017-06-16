@@ -4,13 +4,14 @@
 
 A basic API wrapper for the [Bitstamp REST API](https://www.bitstamp.net/api/). Please refer to [their documentation](https://www.bitstamp.net/api/) for all calls explained. Check out `example.js` for a list of all possible calls and their parameters.
 
-    var Bitstamp = require('bitstamp');
-    var bitstamp = new Bitstamp;
+```javascript
+var Bitstamp = require('bitstamp');
+var bitstamp = new Bitstamp;
 
-    bitstamp.transactions('btcusd', function(err, trades) {
-      console.log(trades);  
-    });
-
+bitstamp.transactions('btcusd', function(err, trades) {
+  console.log(trades);  
+});
+```
 ## 0.3.0 - June 2016 update
 
 API v2 is introduced, you now need to pass the market you are interested in. Note that some API calls have changed [and](https://www.bitstamp.net/api/):

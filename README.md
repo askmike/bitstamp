@@ -6,10 +6,10 @@ A basic API wrapper for the [Bitstamp REST API](https://www.bitstamp.net/api/). 
 
 ```javascript
 var Bitstamp = require('bitstamp');
-var bitstamp = new Bitstamp;
+var bitstamp = new Bitstamp();
 
 bitstamp.transactions('btcusd', function(err, trades) {
-  console.log(trades);  
+  console.log(trades);
 });
 ```
 ## 0.3.0 - June 2016 update

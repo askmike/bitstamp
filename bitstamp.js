@@ -14,15 +14,17 @@ _.mixin({
   }
 });
 
-var Bitstamp = function(key, secret, client_id) {
+var Bitstamp = function(key, secret, client_id, timeout) {
   this.key = key;
   this.secret = secret;
   this.client_id = client_id;
+  this.timeout = timeout || 5000;
 
   _.bindAll(this);
 }
 
 Bitstamp.prototype._request = function(method, path, data, callback, args) {
+  var timeout = this.timeout;
   var options = {
     host: 'www.bitstamp.net',
     path: path,
@@ -61,14 +63,13 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
   });
 
   req.on('socket', function (socket) {
-    socket.setTimeout(5000);
+    socket.setTimeout(timeout);
     socket.on('timeout', function() {
       req.abort();
     });
   });
 
   req.end(data);
-
 }
 
 // if you call new Date to fast it will generate

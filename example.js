@@ -2,7 +2,7 @@ var Bitstamp = require('./bitstamp.js');
 
 var publicBitstamp = new Bitstamp();
 
-// publicBitstamp.transactions('btceur', {time: 'hour'}, console.log);
+publicBitstamp.transactions('btceur', {time: 'hour'}, console.log);
 // publicBitstamp.ticker('btceur', console.log);
 // publicBitstamp.ticker_hour('btceur', console.log);
 // publicBitstamp.order_book('btcusd', false, console.log);

@@ -14,6 +14,14 @@ _.mixin({
   }
 });
 
+// error object this lib returns
+var BitstampError = function BitstampError(message, meta) {
+  Error.captureStackTrace(this, this.constructor);
+  this.name = this.constructor.name;
+  this.message = message;
+  this.meta = meta;
+};
+
 var Bitstamp = function(key, secret, client_id, timeout) {
   this.key = key;
   this.secret = secret;
@@ -47,7 +55,15 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
     });
     res.on('end', function() {
       if (res.statusCode !== 200) {
-        return callback(new Error('Bitstamp error ' + res.statusCode + ': ' + buffer));
+        var message;
+
+        try {
+          message = JSON.parse(buffer);
+        } catch(e) {
+          message = buffer;
+        }
+
+        return callback(new BitstampError('Bitstamp error ' + res.statusCode, message));
       }
       try {
         var json = JSON.parse(buffer);

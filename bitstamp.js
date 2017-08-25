@@ -88,7 +88,7 @@ Bitstamp.prototype._request = function(method, path, data, callback, args) {
   req.end(data);
 }
 
-// if you call new Date to fast it will generate
+// if you call new Date too fast it will generate
 // the same ms, helper to make sure the nonce is
 // truly unique (supports up to 999 calls per ms).
 Bitstamp.prototype._generateNonce = function() {

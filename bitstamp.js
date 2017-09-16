@@ -268,6 +268,14 @@ Bitstamp.prototype.bitcoin_withdrawal = function(amount, address, instant, callb
   }, true);
 }
 
+Bitstamp.prototype.xrp_withdrawal = function(amount, address, destination_tag, callback) {
+  this._post(null, 'xrp_withdrawal', callback, {
+    amount: amount,
+    address: address,
+    destination_tag: destination_tag
+  }, true);
+}
+
 Bitstamp.prototype.bitcoin_deposit_address = function(callback) {
   this._post(null, 'bitcoin_deposit_address', callback, null, true);
 }

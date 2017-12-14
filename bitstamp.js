@@ -22,11 +22,12 @@ var BitstampError = function BitstampError(message, meta) {
   this.meta = meta;
 };
 
-var Bitstamp = function(key, secret, client_id, timeout) {
+var Bitstamp = function(key, secret, client_id, timeout, host) {
   this.key = key;
   this.secret = secret;
   this.client_id = client_id;
   this.timeout = timeout || 5000;
+  this.host = host || 'www.bitstamp.net';
 
   _.bindAll(this);
 }
@@ -34,7 +35,7 @@ var Bitstamp = function(key, secret, client_id, timeout) {
 Bitstamp.prototype._request = function(method, path, data, callback, args) {
   var timeout = this.timeout;
   var options = {
-    host: 'www.bitstamp.net',
+    host: this.host,
     path: path,
     method: method,
     headers: {

@@ -12,7 +12,8 @@ var key = 'your-key';
 var secret = 'your-secret';
 var client_id = 'your-bitstamp-user-id';
 var timeout = 10000;
-var privateBitstamp = new Bitstamp(key, secret, client_id, timeout);
+var host = 'www.your.bitstamp.net';
+var privateBitstamp = new Bitstamp(key, secret, client_id, timeout, host);
 
 //    commented out for your protection
 

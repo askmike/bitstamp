@@ -1,0 +1,6 @@
+{
+  "key":"your-key",
+  "secret":"your-secret",
+  "client_id":"your-bitstamp-user-id",
+  "host":"www.bitstamp.net"
+}

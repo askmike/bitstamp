@@ -1,2 +1,4 @@
 *.swp
 node_modules/
+config/dev.json
+config/prod.json

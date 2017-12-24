@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [2.0.1] - 2017-12-24
 ### Added
 -Add file CHANGELOG.md and move changelog from README.md there.
 -config file for example.js
@@ -34,4 +36,4 @@ API v2 is introduced, you now need to pass the market you are interested in. Not
 ### Changed
 -The whole private API authentication process looks different now. The result is that you have to provide different information to Bitstamp (generate an API key, provide key, secret and client ID the last is your Bitstamp user ID). Check out the new examples in `example.js`.
 
-[Unreleased]: https://github.com/13pass/bitstamp/compare/0b8f1b4c...HEAD
+[Unreleased]: https://github.com/13pass/bitstamp/compare/v2.0.1...HEAD

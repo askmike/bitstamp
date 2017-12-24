@@ -50,49 +50,49 @@ Bitstamp.prototype._request = function (method, path, data) {
     options.headers['content-type'] = 'application/x-www-form-urlencoded';
   }
 
-	return new Promise((resolve, reject) => {
-		const req = https.request(options, res => {
-			res.setEncoding('utf8');
-			let buffer = '';
+  return new Promise((resolve, reject) => {
+    const req = https.request(options, res => {
+      res.setEncoding('utf8');
+      let buffer = '';
 			
-			res.on('data', response => {
-				buffer += response;
-			});
+      res.on('data', response => {
+        buffer += response;
+      });
 
-			res.on('end', () => {
-				if (res.statusCode !== 200) {
-					let message;
+      res.on('end', () => {
+        if (res.statusCode !== 200) {
+          let message;
 
-					try {
-						message = JSON.parse(buffer);
-					} catch (e) {
-						message = buffer;
-					}
+          try {
+            message = JSON.parse(buffer);
+          } catch (e) {
+            message = buffer;
+          }
 
-					reject(new BitstampError('Bitstamp error ' + res.statusCode, message));
-				}
-				try {
-					let json = JSON.parse(buffer);
+          reject(new BitstampError('Bitstamp error ' + res.statusCode, message));
+        }
+        try {
+          let json = JSON.parse(buffer);
           resolve(json);
-				} catch (err) {
-					reject(err);
-				}
-			});
-		});
+        } catch (err) {
+          reject(err);
+        }
+      });
+    });
 
-		req.on('error', err => {
-			reject(err);
-		});
+    req.on('error', err => {
+      reject(err);
+    });
 
-		req.on('socket', socket => {
-			socket.setTimeout(timeout);
-			socket.on('timeout', () => {
-				req.abort();
-			});
-		});
+    req.on('socket', socket => {
+      socket.setTimeout(timeout);
+      socket.on('timeout', () => {
+        req.abort();
+      });
+    });
 
-		req.end(data);
-	});
+    req.end(data);
+  });
 };
 
 // if you call new Date too fast it will generate
@@ -134,35 +134,35 @@ Bitstamp.prototype._get = async function (market, action, args) {
 
 Bitstamp.prototype._post = async function (market, action, args, legacy_endpoint) {
   if (!this.key || !this.secret || !this.client_id) {
-		throw 'Must provide key, secret and client ID to make this API request.';
-	}else{
-		let path;
-		if (legacy_endpoint) {
-			path = '/api/' + action + '/';
-		} else {
-			if (market) {
-				path = '/api/v2/' + action + '/' + market + '/';
-			} else {
-				path = '/api/v2/' + action + '/';
-			}
-		}
+    throw 'Must provide key, secret and client ID to make this API request.';
+  } else {
+    let path;
+    if (legacy_endpoint) {
+      path = '/api/' + action + '/';
+    } else {
+      if (market) {
+        path = '/api/v2/' + action + '/' + market + '/';
+      } else {
+        path = '/api/v2/' + action + '/';
+      }
+    }
 
-		let nonce = this._generateNonce();
-		let message = nonce + this.client_id + this.key;
-		const signer = crypto.createHmac('sha256', new Buffer(this.secret, 'utf8'));
-		const signature = signer.update(message).digest('hex').toUpperCase();
+    let nonce = this._generateNonce();
+    let message = nonce + this.client_id + this.key;
+    const signer = crypto.createHmac('sha256', new Buffer(this.secret, 'utf8'));
+    const signature = signer.update(message).digest('hex').toUpperCase();
 
-		args = _.extend({
-			key: this.key,
-			signature: signature,
-			nonce: nonce
-		}, args);
+    args = _.extend({
+      key: this.key,
+      signature: signature,
+      nonce: nonce
+    }, args);
 
-		args = _.compactObject(args);
-		let data = querystring.stringify(args);
+    args = _.compactObject(args);
+    let data = querystring.stringify(args);
 
-		return await this._request('post', path, data, args);
-	}
+    return await this._request('post', path, data, args);
+  }
 };
 
 //
@@ -177,19 +177,19 @@ Bitstamp.prototype.transactions = async function (market, options, callback) {
   return await this._get(market, 'transactions', options);
 };
 
-Bitstamp.prototype.ticker = async function (market, callback) {
+Bitstamp.prototype.ticker = async function (market) {
   return await this._get(market, 'ticker');
 };
 
-Bitstamp.prototype.ticker_hour = async function (market, callback) {
+Bitstamp.prototype.ticker_hour = async function (market) {
   return await this._get(market, 'ticker_hour');
 };
 
-Bitstamp.prototype.order_book = async function (market, group) {
+Bitstamp.prototype.order_book = async function (market) {
   return await this._get(market, 'order_book');
 };
 
-Bitstamp.prototype.eur_usd = async function (callback) {
+Bitstamp.prototype.eur_usd = async function () {
   return await this._get(null, 'eur_usd');
 };
 

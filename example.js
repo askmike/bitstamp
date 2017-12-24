@@ -7,7 +7,7 @@ const Bitstamp = require('./bitstamp.js');
 const publicBitstamp = new Bitstamp();
 
 publicBitstamp.ticker('btceur').then(result => {
-  console.log('ticker btceur',result);
+  console.log('ticker btceur', result);
 });
 /*publicBitstamp.ticker_hour('btceur').then(result => {
   console.log('ticker_hour btceur',result);
@@ -24,18 +24,18 @@ publicBitstamp.eur_usd().then(result => {
 */
 ////////////////////
 // Private API calls
-const configFilePath ='./config/dev.json';
+const configFilePath = './config/dev.json';
 let config;
 try {
   config = require(configFilePath);
-}catch (e) {
-  console.error("Run 'mv config/sample.json "+configFilePath+ "' and fill the file with your credentials\n",e); 
+} catch (e) {
+  console.error('Run \'mv config/sample.json ' + configFilePath + '\' and fill the file with your credentials\n', e); 
 }
 if (config) {
   const privateBitstamp = new Bitstamp(config.key, config.secret, config.client_id, config.timeout, config.host);
 
   privateBitstamp.balance().then(result => {
-    console.log('balance',result);
+    console.log('balance', result);
   });
   //    commented out for your protection
   /*privateBitstamp.user_transactions('btceur', {

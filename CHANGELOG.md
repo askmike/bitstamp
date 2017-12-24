@@ -11,8 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 -migrate code to ES6 syntax.
+-Replace callbacks with await/async and promises.
+-Update required node version to v8 minimum.
 
-## [1.0.5] - 2017-12-24
+## [1.1.0] - 2017-12-24
 ### Added
 -configurable host
 

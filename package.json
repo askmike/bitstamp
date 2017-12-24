@@ -1,6 +1,6 @@
 {
   "name": "bitstamp",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Bitstamp REST API wrapper",
   "keywords": [
     "bitstamp",

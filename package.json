@@ -1,6 +1,6 @@
 {
   "name": "bitstamp",
-  "version": "1.0.4",
+  "version": "2.0.1",
   "description": "Bitstamp REST API wrapper",
   "keywords": [
     "bitstamp",
@@ -12,7 +12,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "underscore": "1.4.4"
+    "lodash": "^4.17.2"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0"
   },
   "repository": {
     "type": "git",
@@ -20,7 +23,7 @@
   },
   "main": "bitstamp.js",
   "engines": {
-    "node": ">= 0.7"
+    "node": ">= 0.8"
   },
   "bugs": {
     "url": "https://github.com/askmike/bitstamp/issues",

@@ -261,19 +261,15 @@ Bitstamp.prototype.withdrawal_requests = function(callback) {
   this._post(null, 'withdrawal_requests', callback, null, true);
 }
 
+// bitcoin
+
 Bitstamp.prototype.bitcoin_withdrawal = function(amount, address, instant, callback) {
   this._post(null, 'bitcoin_withdrawal', callback, {
     amount: amount,
     address: address,
-    instant: instant
-  }, true);
-}
 
-Bitstamp.prototype.xrp_withdrawal = function(amount, address, destination_tag, callback) {
-  this._post(null, 'xrp_withdrawal', callback, {
-    amount: amount,
-    address: address,
-    destination_tag: destination_tag
+    // NOTE: isntant is not available as of `Tue Jan  9 13:52:32 CET 2018`
+    instant: instant
   }, true);
 }
 
@@ -285,6 +281,69 @@ Bitstamp.prototype.unconfirmed_btc = function(callback) {
   this._post(null, 'unconfirmed_btc', callback, null, true);
 }
 
+// litecoin
+
+Bitstamp.prototype.litcoin_withdrawal = function(amount, address, callback) {
+  this._post(null, 'ltc_withdrawal', callback, {
+    amount: amount,
+    address: address
+  }, true);
+}
+
+Bitstamp.prototype.litecoin_address = function(callback) {
+  this._post(null, 'ltc_address', callback, null, true);
+}
+
+// ethereum
+
+Bitstamp.prototype.eth_withdrawal = function(amount, address, callback) {
+  this._post(null, 'eth_withdrawal', callback, {
+    amount: amount,
+    address: address
+  }, true);
+}
+
+Bitstamp.prototype.eth_address = function(callback) {
+  this._post(null, 'eth_address', callback, null, true);
+}
+
+// NOTE: not sure what the difference is between the XRP and ripple calls.
+
+Bitstamp.prototype.xrp_withdrawal = function(amount, address, destination_tag, callback) {
+  this._post(null, 'xrp_withdrawal', callback, {
+    amount: amount,
+    address: address,
+    destination_tag: destination_tag
+  }, true);
+}
+
+Bitstamp.prototype.xrp_address = function(callback) {
+  this._post(null, 'xrp_address', callback, null, true);
+}
+
+// open bank
+
+Bitstamp.prototype.withdrawal = function(amount, account_currency, name, IBAN, BIC, address, postal_code, city, country, type, bank_name, bank_address, bank_postal_code, bank_city, bank_country, currency, comment, callback) {
+  this._post(null, 'withdrawal/open', {
+    amount: amount,
+    account_currency: account_currency,
+    name: name,
+    IBAN: IBAN,
+    BIC: BIC,
+    address: address,
+    postal_code: postal_code,
+    city: city,
+    country: country,
+    type: type,
+    bank_name: bank_name,
+    bank_address: bank_address,
+    bank_postal_code: bank_postal_code,
+    bank_city: bank_city,
+    bank_country: bank_country,
+    currency: currency,
+    comment: comment
+  }, callback, null, true);
+}
 
 // the API documentation is wrong as of `Sat Jun 11 2016 10:10:07`.
 // It doesn't corectly list this call. Therefor not sure if all

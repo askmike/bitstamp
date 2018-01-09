@@ -317,4 +317,16 @@ Bitstamp.prototype.transfer_from_main = function(amount, currency, subAccount, c
   }, true);
 }
 
+Bitstamp.prototype.new_liquidation_address = function(liquidationCurrency, callback) {
+  this._post(null, 'liquidation_address/new', callback, {
+    liquidation_currency: liquidationCurrency
+  });
+}
+
+Bitstamp.prototype.info_liquidation_address = function(address, callback) {
+  this._post(null, 'liquidation_address/info', callback, {
+    address: address
+  });
+}
+
 module.exports = Bitstamp;

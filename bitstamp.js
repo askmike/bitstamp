@@ -199,7 +199,7 @@ Bitstamp.prototype.eur_usd = function(callback) {
 }
 
 Bitstamp.prototype.trading_pairs_info = function(callback) {
-  this._get(null, 'trading_pairs_info', callback);
+  this._get(null, 'trading-pairs-info', callback);
 }
 
 //

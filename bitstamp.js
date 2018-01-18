@@ -113,8 +113,10 @@ Bitstamp.prototype._generateNonce = function() {
 Bitstamp.prototype._get = function(market, action, callback, args) {
   args = _.compactObject(args);
 
-  if(market)
+  if (market)
     var path = '/api/v2/' + action + '/' + market;
+  else if (action === 'trading_pairs_info')
+    var path = '/api/v2/' + action;
   else
     // some documented endpoints (eg `https://www.bitstamp.net/api/eur_usd/`)
     // do not go via the v2 api.
@@ -194,6 +196,10 @@ Bitstamp.prototype.order_book = function(market, group, callback) {
 
 Bitstamp.prototype.eur_usd = function(callback) {
   this._get(null, 'eur_usd', callback);
+}
+
+Bitstamp.prototype.trading_pairs_info = function(callback) {
+  this._get(null, 'trading-pairs-info', callback);
 }
 
 //

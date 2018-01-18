@@ -196,6 +196,10 @@ Bitstamp.prototype.eur_usd = function(callback) {
   this._get(null, 'eur_usd', callback);
 }
 
+Bitstamp.prototype.trading_pairs_info = function(callback) {
+  this._get(null, 'trading_pairs_info', callback);
+}
+
 //
 // Private API
 // (you need to have key / secret / client ID set)

@@ -124,6 +124,18 @@ Bitstamp.prototype._get = function(market, action, callback, args) {
   this._request('get', path, undefined, callback, args)
 }
 
+Bitstamp.prototype._getv2 = function(market, action, callback, args) {
+  args = _.compactObject(args);
+
+  if(market)
+    var path = '/api/v2/' + action + '/' + market;
+  else
+    var path = '/api/v2/' + action;
+
+  path += (querystring.stringify(args) === '' ? '/' : '/?') + querystring.stringify(args);
+  this._request('get', path, undefined, callback, args)
+}
+
 Bitstamp.prototype._post = function(market, action, callback, args, legacy_endpoint) {
   if(!this.key || !this.secret || !this.client_id)
     return callback(new Error('Must provide key, secret and client ID to make this API request.'));
@@ -194,6 +206,10 @@ Bitstamp.prototype.order_book = function(market, group, callback) {
 
 Bitstamp.prototype.eur_usd = function(callback) {
   this._get(null, 'eur_usd', callback);
+}
+
+Bitstamp.prototype.trading_pairs_info = function(callback) {
+  this._getv2(null, 'trading-pairs-info', callback);
 }
 
 //
